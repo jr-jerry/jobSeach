@@ -1,6 +1,8 @@
 package com.github_jr_jerry.JobSearch.services;
 
 import com.github_jr_jerry.JobSearch.model.Jobs;
+import com.github_jr_jerry.JobSearch.repository.JobRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -10,22 +12,30 @@ import java.util.Optional;
 
 @Component
 public class Job_Services implements JobServices{
-    List<Jobs> jobList=new ArrayList<>();
-    int nextId=1;
+    @Autowired
+    JobRepository jobRepo;
 
     @Override
     public List<Jobs> getAll() {
-        return jobList;
+        return jobRepo.findAll();
     }
 
     @Override
     public void postJobs(Jobs job) {
-        job.setId(nextId++);
-        jobList.add(job);
+        try{
+            jobRepo.save(job);
+        }
+        catch (Exception e){
+            throw new RuntimeException("error in saving job");
+        }
     }
     @Override
     public Jobs getById(int id){
-        return jobList.get(id-1);
+        Optional<Jobs> jobBox=jobRepo.findById(id);
+        if(jobBox.isPresent()){
+            return jobBox.get();
+        }
+        return null;
     }
 
     @Override
@@ -33,12 +43,20 @@ public class Job_Services implements JobServices{
 //        for(Jobs item:jobList) {
 //            if (item.getId() == id) jobList.remove(item);
 //        }currentModification Exception
-        Iterator<Jobs> iterator=jobList.iterator();
-        while(iterator.hasNext()){
-            Jobs job=iterator.next();
-            if (job.getId()==id){
-                iterator.remove();
-            }
+//        Iterator<Jobs> iterator=jobList.iterator();
+//        while(iterator.hasNext()){
+//            Jobs job=iterator.next();
+//            if (job.getId()==id){
+//                iterator.remove();
+//            }
+//        }
+        Optional<Jobs> jobBox=jobRepo.findById(id);
+
+        if(jobBox.isPresent()){
+            jobRepo.deleteById(id);
+        }
+        else{
+            throw new RuntimeException("no entry relatedt this id present ");
         }
     }
 

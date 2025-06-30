@@ -3,6 +3,7 @@ package com.github_jr_jerry.JobSearch.controller;
 import com.github_jr_jerry.JobSearch.model.Jobs;
 import com.github_jr_jerry.JobSearch.services.Job_Services;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jackson.JsonObjectSerializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +23,15 @@ public class JobsController {
         return new ResponseEntity<>(jobServices.getAll(), HttpStatus.OK);
     }
     @PostMapping("/create")
-    public ResponseEntity<Boolean> createJob(@RequestBody Jobs jobData){
-        jobServices.postJobs(jobData);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<?> createJob(@RequestBody Jobs jobData){
+        try{
+            jobServices.postJobs(jobData);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+
+        }
+        catch (RuntimeException e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @GetMapping("/{id}")
     public ResponseEntity<Jobs> findById(@PathVariable int id){
@@ -35,11 +42,18 @@ public class JobsController {
     }
     @DeleteMapping("/del/{id}")
     public ResponseEntity<?> DelById(@PathVariable int id){
-        if(jobServices.getById(id)!=null) {
+//        if(jobServices.getById(id)!=null) {
+//            jobServices.delJobs(id);
+//            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+//        }
+//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        try{
             jobServices.delJobs(id);
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+            return new ResponseEntity<>("succesfully deleted id"+id,HttpStatus.OK);
+        }catch (RuntimeException e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateById(@PathVariable int id,@RequestBody Jobs jobData){
