@@ -1,0 +1,41 @@
+package com.github_jr_jerry.JobSearch.controller;
+
+import com.github_jr_jerry.JobSearch.model.Jobs;
+import com.github_jr_jerry.JobSearch.model.Review;
+import com.github_jr_jerry.JobSearch.services.Job_Services;
+import com.github_jr_jerry.JobSearch.services.ReviewServices;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RequestMapping("/company")
+@RestController
+public class ReviewController {
+    @Autowired
+    ReviewServices reviewService;
+
+    @GetMapping("/{id}/review")
+    public ResponseEntity<?> getReviewEndpoint(@PathVariable int id){
+        try{
+            return new ResponseEntity<>(reviewService.findAllReview(id),HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/{id}/review")
+    public ResponseEntity<?> createReviewEndpoint(@PathVariable int id,@RequestBody Review reviewData){
+        try{
+            return new ResponseEntity<>(reviewService.createReview(id,reviewData),HttpStatus.CREATED);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+        }
+    }
+
+}
