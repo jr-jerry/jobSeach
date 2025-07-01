@@ -19,5 +19,7 @@ public class Jobs {
     private String minSalary;
     private String maxSalary;
     private String location;
+
+    @ManyToOne
     private List<Company> companyList;
 }

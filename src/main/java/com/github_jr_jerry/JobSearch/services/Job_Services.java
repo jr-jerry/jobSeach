@@ -35,16 +35,6 @@ public class Job_Services implements JobServices{
 
     @Override
     public void delJobs(int id) {
-//        for(Jobs item:jobList) {
-//            if (item.getId() == id) jobList.remove(item);
-//        }currentModification Exception
-//        Iterator<Jobs> iterator=jobList.iterator();
-//        while(iterator.hasNext()){
-//            Jobs job=iterator.next();
-//            if (job.getId()==id){
-//                iterator.remove();
-//            }
-//        }
         Optional<Jobs> jobBox=jobRepo.findById(id);
 
         if(jobBox.isPresent()){
@@ -57,20 +47,6 @@ public class Job_Services implements JobServices{
 
     @Override
     public boolean upDateById_S(int id,Jobs jobData) {
-//        Iterator<Jobs> itr=jobList.iterator();
-//        while(itr.hasNext()){
-//            Jobs job=itr.next();
-//            if(job.getId()==id){
-//
-//                job.setTitle(jobData.getTitle());
-//                job.setDescription(jobData.getDescription());
-//                job.setMinSalary(jobData.getMinSalary());
-//                job.setLocation(jobData.getLocation());
-//                job.setMaxSalary(jobData.getMaxSalary());
-//                return true;
-//            }
-//        }
-//        return false;
         Optional<Jobs> box=jobRepo.findById(id);
         if(box.isPresent()){
           Jobs job= box.get();

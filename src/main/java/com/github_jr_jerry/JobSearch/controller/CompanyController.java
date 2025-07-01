@@ -40,6 +40,17 @@ public class CompanyController {
             return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
         }
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateEndpoint(@RequestBody Company updatedData,@PathVariable int id){
+        try{
+            Company updatedCompany =companySer.updateById(id,updatedData);
+            return new ResponseEntity<>(updatedCompany,HttpStatus.ACCEPTED);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+        }
+
+    }
 
 
 }

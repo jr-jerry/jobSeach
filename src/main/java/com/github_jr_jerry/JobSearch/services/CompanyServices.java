@@ -35,4 +35,20 @@ public class CompanyServices {
         return companyRepo.findById(id);
     }
 
+    public Company updateById(int id,Company updatedData){
+        Optional<Company> box=companyRepo.findById(id);
+            if(box.isPresent()){
+                Company oldData=box.get();
+                oldData.setName(updatedData.getName()!=null && updatedData.getName().isEmpty()?updatedData.getName(): oldData.getName());
+                oldData.setJobsList(updatedData.getJobsList());
+                return companyRepo.save(oldData);
+
+            }
+            else{
+                throw new RuntimeException("error saving company with id : "+id);
+            }
+
+
+    }
+
 }

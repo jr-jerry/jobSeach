@@ -1,5 +1,6 @@
 package com.github_jr_jerry.JobSearch.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class Company {
     private int id;
     @NonNull
     private String name;
-    @OneToMany
+    @OneToMany(mappedBy = "companyList")
+    @JsonIgnore//this annotation ignore call of job value when company object call in json by job object
     private List<Jobs> jobsList;
 }
