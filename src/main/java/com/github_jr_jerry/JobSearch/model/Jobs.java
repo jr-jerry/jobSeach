@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @Entity//make this object as entity of h2 database
@@ -16,6 +18,6 @@ public class Jobs {
     private String description;
     private String minSalary;
     private String maxSalary;
-
     private String location;
+    private List<Company> companyList;
 }
