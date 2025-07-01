@@ -19,7 +19,10 @@ public class Company {
     private int id;
     @NonNull
     private String name;
-    @OneToMany(mappedBy = "companyList")
+    @OneToMany(mappedBy = "company")
     @JsonIgnore//this annotation ignore call of job value when company object call in json by job object
     private List<Jobs> jobsList;
+    @OneToMany(mappedBy ="company")
+    @JsonIgnore
+    private List<Review> reviewList;
 }
