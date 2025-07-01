@@ -5,8 +5,6 @@ import com.github_jr_jerry.JobSearch.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,21 +19,18 @@ public class Job_Services implements JobServices{
     }
 
     @Override
-    public void postJobs(Jobs job) {
+    public Jobs postJobs(Jobs job) {
         try{
-            jobRepo.save(job);
+            return jobRepo.save(job);
         }
         catch (Exception e){
-            throw new RuntimeException("error in saving job");
+            throw new RuntimeException("error in saving job "+e.getMessage());
         }
     }
     @Override
-    public Jobs getById(int id){
-        Optional<Jobs> jobBox=jobRepo.findById(id);
-        if(jobBox.isPresent()){
-            return jobBox.get();
-        }
-        return null;
+    public Optional<Jobs> getById(int id){
+        return jobRepo.findById(id);
+
     }
 
     @Override
@@ -62,18 +57,30 @@ public class Job_Services implements JobServices{
 
     @Override
     public boolean upDateById_S(int id,Jobs jobData) {
-        Iterator<Jobs> itr=jobList.iterator();
-        while(itr.hasNext()){
-            Jobs job=itr.next();
-            if(job.getId()==id){
-
-                job.setTitle(jobData.getTitle());
+//        Iterator<Jobs> itr=jobList.iterator();
+//        while(itr.hasNext()){
+//            Jobs job=itr.next();
+//            if(job.getId()==id){
+//
+//                job.setTitle(jobData.getTitle());
+//                job.setDescription(jobData.getDescription());
+//                job.setMinSalary(jobData.getMinSalary());
+//                job.setLocation(jobData.getLocation());
+//                job.setMaxSalary(jobData.getMaxSalary());
+//                return true;
+//            }
+//        }
+//        return false;
+        Optional<Jobs> box=jobRepo.findById(id);
+        if(box.isPresent()){
+          Jobs job= box.get();
+            job.setTitle(jobData.getTitle());
                 job.setDescription(jobData.getDescription());
                 job.setMinSalary(jobData.getMinSalary());
                 job.setLocation(jobData.getLocation());
                 job.setMaxSalary(jobData.getMaxSalary());
+                jobRepo.save(job);
                 return true;
-            }
         }
         return false;
     }
