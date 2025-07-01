@@ -21,5 +21,5 @@ public class Jobs {
     private String location;
 
     @ManyToOne
-    private List<Company> companyList;
+    private Company company;
 }

@@ -55,6 +55,7 @@ public class Job_Services implements JobServices{
                 job.setMinSalary(jobData.getMinSalary());
                 job.setLocation(jobData.getLocation());
                 job.setMaxSalary(jobData.getMaxSalary());
+                job.setCompany(jobData.getCompany());
                 jobRepo.save(job);
                 return true;
         }
