@@ -57,6 +57,14 @@ public class ReviewController {
             return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
         }
     }
+    @DeleteMapping("/{companyId}/review/{reviewId}")
+    public ResponseEntity<?> delReviewByIdEndpoint(@PathVariable int companyId,@PathVariable Long reviewId){
+        Boolean deleted=reviewService.delReviewById(companyId,reviewId);
+        if(deleted){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>("No review Found with this Id " ,HttpStatus.NOT_FOUND);
+    }
 
 
 }

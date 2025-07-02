@@ -41,6 +41,7 @@ public class CompanyServices {
                 Company oldData=box.get();
                 oldData.setName(updatedData.getName()!=null && updatedData.getName().isEmpty()?updatedData.getName(): oldData.getName());
                 oldData.setJobsList(updatedData.getJobsList());
+                oldData.setReviewList(updatedData.getReviewList());
                 return companyRepo.save(oldData);
 
             }

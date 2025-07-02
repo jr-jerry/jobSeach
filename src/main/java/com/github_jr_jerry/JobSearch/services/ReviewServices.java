@@ -18,6 +18,9 @@ public class ReviewServices {
     @Autowired
     CompanyRespository companyRepo;
 
+    @Autowired
+    CompanyServices companyServices;
+
     public List<Review> findAllReview(int id){
        return reviewRepo.findByCompanyId(id);
 
@@ -62,5 +65,26 @@ public class ReviewServices {
         }
 
     }
+
+    public Boolean delReviewById(int companyId, Long reviewId) {
+        Optional<Company> companyBox = companyRepo.findById(companyId);
+        Optional<Review> reviewBox = reviewRepo.findById(reviewId);
+
+        if (companyBox.isPresent() && reviewBox.isPresent()) {
+            Company company = companyBox.get();
+            Review review = reviewBox.get();
+
+            // Check if the review belongs to this company
+            boolean matched = company.getReviewList().removeIf(r -> r.getId().equals(reviewId));
+
+            if (matched) {
+                reviewRepo.delete(review); // delete from DB
+                companyServices.updateById(companyId, company); // update the company review list
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 }
