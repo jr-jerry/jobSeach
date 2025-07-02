@@ -1,5 +1,4 @@
 package com.github_jr_jerry.JobSearch.controller;
-
 import com.github_jr_jerry.JobSearch.model.Jobs;
 import com.github_jr_jerry.JobSearch.model.Review;
 import com.github_jr_jerry.JobSearch.services.Job_Services;
@@ -37,5 +36,27 @@ public class ReviewController {
             return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("/{companyId}/review/{reviewId}")
+    public ResponseEntity<?> getReviewByIdEndpoint(@PathVariable int companyId, @PathVariable Long reviewId ){
+        Review review=reviewService.findReviewById(companyId,reviewId);
+       try{
+           if(review ==null){
+               return new ResponseEntity<>(" No Review Exist ",HttpStatus.NOT_FOUND);
+           }
+           return new ResponseEntity<>(review,HttpStatus.OK);
+       } catch (RuntimeException e) {
+           return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+       }
+    }
+
+    @PutMapping("/{companyId}/review/{reviewId}")
+    public ResponseEntity<?> updateReviewByIdEndpoint(@PathVariable int companyId, @PathVariable Long reviewId ,@RequestBody Review updatedReview){
+        try {
+            return new ResponseEntity<>(reviewService.updateReviewById(companyId, reviewId, updatedReview), HttpStatus.OK);
+        }catch (RuntimeException e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+        }
+    }
+
 
 }

@@ -39,4 +39,28 @@ public class ReviewServices {
         }
     }
 
+    public Review findReviewById(int companyId,Long reviewId){
+        List<Review> exist=reviewRepo.findByCompanyId(companyId);
+        if(!exist.isEmpty()){
+            return exist.stream()
+                    .filter(item->item.getId().equals(reviewId)).findFirst()
+                    .orElse(null);
+        }else{
+            throw new RuntimeException(" No Review find with this Id ");
+        }
+    }
+
+    public Review updateReviewById(int companyId,Long reviewId ,Review updatedReview){
+        List<Review> exist=reviewRepo.findByCompanyId(companyId);
+        Review review=exist.stream().filter(item->item.getId().equals(reviewId)).findFirst().orElse(null);
+        if(review!=null){
+            review.setDescription(updatedReview.getDescription());
+            return reviewRepo.save(review);
+
+        }else{
+            throw new RuntimeException("no review exist with this id ");
+        }
+
+    }
+
 }
